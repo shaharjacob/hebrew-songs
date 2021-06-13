@@ -23,7 +23,7 @@ def read_url(url: str) -> str:
         return ""
 
 
-def get_artists(load: bool = False, save: bool = False) -> List[Dict[str, str]]:
+def get_artists(load: bool = True, save: bool = False) -> List[Dict[str, str]]:
     if load:
         df = pandas.read_csv('artists.tsv', sep='\t')
         return df.to_dict('records')
@@ -62,7 +62,11 @@ def get_number_of_pages(artist_id: int) -> int:
         return 0
 
 
-def get_artist_songs() -> List[Dict[str, str]]:
+def get_artist_songs(load: bool = True, save: bool = False) -> List[Dict[str, str]]:
+    if load:
+        df = pandas.read_csv('songs.tsv', sep='\t')
+        return df.to_dict('records')
+
     artists = get_artists()
     songs = []
     for artist in tqdm(artists):
@@ -79,8 +83,11 @@ def get_artist_songs() -> List[Dict[str, str]]:
                 ])
             except:
                 secho(f'[WARNING] failed to parse url {url}')
+    if save:
+        df = DataFrame(songs)
+        df.to_csv('songs.tsv', sep="\t", index=False, encoding='utf-8')
     return songs
 
-# songs = get_artist_songs()
-# df = DataFrame(songs)
-# df.to_csv('songs2.tsv', sep="\t", index=False, encoding='utf-8')
+
+
+
