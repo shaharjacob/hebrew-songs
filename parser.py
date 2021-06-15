@@ -13,12 +13,46 @@ from bs4 import BeautifulSoup
 BASE_URL = 'https://shironet.mako.co.il'
 ABC_INDECIES = list(range(22))
 ABC = 'abcdefghijklmnopqrstuvwxysABCDEFGHIJKLMNOPQRSTUVWXYZ'
+GOOGLE_URL = 'https://www.google.com'
 
+arr = [
+    'איפה הילד',
+    'בנזין',
+    'בוטן מתוק בקרקס',
+    'גזוז',
+    'גליקריה',
+    'הדורבנים',
+    'החברים של נטאשה',
+    'החלונות הגבוהים',
+    'המכשפות',
+    'התבלינים',
+    'התרנגולים',
+    'זוהר ארגוב',
+    'זקני צפת',
+    'חיים משה',
+    'יפה ירקוני',
+    'יציאת חירום',
+    'ירדנה ארזי',
+    'כוורת',
+    'כנסיית השכל',
+    'להקת הנח"ל',
+    'להקת חיל הים',
+    'משינה',
+    'מלי לוי',
+    'סנדי בר',
+    'רוקפור',
+    'שב"ק מיוזיק',
+    'שלישיית מה קשור',
+    'שלישיית גשר הירקון',
+]
 
-def read_url(url: str) -> str:
+def read_url(url: str, decode: bool = True) -> str:
     try:
         response = requests.get(url)
-        return response.content.decode('utf-8')
+        if decode:
+            return response.content.decode('utf-8')
+        else:
+            return response.content
     except:
         return ""
 
@@ -30,7 +64,6 @@ def get_artists(load: bool = True, save: bool = False) -> List[Dict[str, str]]:
 
     artists = []
     for letter in tqdm(ABC_INDECIES):
-        if letter < 14: continue
         try:
             url = f'{BASE_URL}/html/indexes/performers/heb_{letter}_popular.html'
             content = read_url(url)
@@ -46,7 +79,7 @@ def get_artists(load: bool = True, save: bool = False) -> List[Dict[str, str]]:
 
 
 def get_number_of_pages(artist_id: int) -> int:
-    url = f'https://shironet.mako.co.il/artist?type=works&lang=1&prfid={artist_id}'
+    url = f'{BASE_URL}/artist?type=works&lang=1&prfid={artist_id}'
     content = read_url(url)
     soup = BeautifulSoup(content, 'html.parser')
     try:
@@ -54,26 +87,32 @@ def get_number_of_pages(artist_id: int) -> int:
         search = soup.find_all('a', attrs={'class': 'artist_player_songlist'})[0].find_parent().find_parent().find_parent().find_parent().find_parent().find_parent()
 
         # there is no unique identifier for this tag, so we do it ugly.
-        number_of_songs = search.find_all('table')[4].find_all('span', attrs={'class': 'artist_normal_txt'})[1].find_all('strong')[1].text.strip()
-
+        number_of_songs = search.find_all('table')[4].find_all('strong')[1].text.strip()
+        
         # there are a most 30 songs in a page
         return math.ceil(float(number_of_songs) / 30)
     except:
-        return 0
+        return -1
 
 
 def get_artist_songs(load: bool = True, save: bool = False) -> List[Dict[str, str]]:
     if load:
-        df = pandas.read_csv('songs.tsv', sep='\t')
+        df = pandas.read_csv('songs2.tsv', sep='\t')
         return df.to_dict('records')
 
     artists = get_artists()
     songs = []
     for artist in tqdm(artists):
+        if artist['name'] not in arr: 
+            continue
+
         number_of_pages = get_number_of_pages(artist["id"])
-        for page in range(number_of_pages):
+        if number_of_pages == -1:
+            print(artist['name'])
+            continue
+        for page in range(1, number_of_pages + 1):
             try:
-                url = f'https://shironet.mako.co.il/artist?type=works&lang=1&prfid={artist["id"]}&page={page}'
+                url = f'{BASE_URL}/artist?type=works&lang=1&prfid={artist["id"]}&page={page}'
                 content = read_url(url)
                 soup = BeautifulSoup(content, 'html.parser')
                 songs.extend([
@@ -82,12 +121,53 @@ def get_artist_songs(load: bool = True, save: bool = False) -> List[Dict[str, st
                     if not re.search('[a-zA-Z]', song.text.strip())
                 ])
             except:
-                secho(f'[WARNING] failed to parse url {url}')
+                secho(f'[WARNING] failed to parse url {url}', fg="red")
     if save:
         df = DataFrame(songs)
-        df.to_csv('songs.tsv', sep="\t", index=False, encoding='utf-8')
+        df.to_csv('songs3.tsv', sep="\t", index=False, encoding='utf-8')
     return songs
 
 
+def get_song_lyrics(url: str):
+    content = read_url(url)
+    soup = BeautifulSoup(content, 'html.parser')
+    lyrics = soup.find('span', attrs={'class': 'artist_lyrics_text'}).text
+    return lyrics
 
 
+def get_song_year(artist: str, song: str) -> int:
+    url = f'{GOOGLE_URL}/search?q=תאריך+הפצה+{song.replace(" ", "+")}+{artist.replace(" ", "+")}'
+    try:
+        content = read_url(url, decode=False)
+        soup = BeautifulSoup(content, 'html.parser')
+        return soup.find("span", string="תאריך הפצה").find_parent().find_parent().find_all('div')[-1].text.strip()
+    except:
+        secho(f"[WARNING] could not parse {url}", fg="red")
+        return -1
+
+
+def build_tsv(output: str):
+    songs = get_artist_songs()
+    for song in tqdm(songs):
+        song["lyrics"] = get_song_lyrics(song["link"])
+    df = DataFrame(songs)
+    df.to_csv(output, sep="\t", index=False, encoding='utf-8')
+
+
+def add_year_to_data(input: str, output: str):
+    df = pandas.read_csv(input, sep='\t')
+    dict_to_edit = df.to_dict('records')
+    count = 0
+    for row in tqdm(dict_to_edit):
+        row["year"] = get_song_year(row["song"], row["artist_name"])
+        if row["year"] == -1:
+            count += 1
+            print(count)
+
+    new_df = DataFrame(dict_to_edit)
+    new_df.to_csv(output, sep="\t", index=False, encoding='utf-8')
+
+if __name__ == '__main__':
+    # build_tsv('data2.tsv')
+    # get_artist_songs(load=True, save=False)
+    add_year_to_data('data.tsv', 'data_with_years.tsv')
