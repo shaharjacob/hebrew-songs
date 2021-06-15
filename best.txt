@@ -21,4 +21,85 @@
 אל תשאל ילד	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=975&wrkid=284	שלמה ארצי	975
 
 1973:
-כוורת 
+המגפיים של ברוך	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=563&wrkid=1152	כוורת	563
+אי שם	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=58&wrkid=4152	אהוד מנור	58
+שיר בבוקר בבוקר	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=975&wrkid=3935	שלמה ארצי	975
+אמא אדמה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=166&wrkid=344	אריק איינשטיין	166
+סימנים	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=843&wrkid=6510	צביקה פיק	843
+
+1974:
+נתתי לה חיי	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=563&wrkid=2348	כוורת	563
+לו יהי	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=738&wrkid=1895	נעמי שמר	738
+יו יה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=563&wrkid=1528	כוורת	563
+נח	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=688&wrkid=2292	מתי כספי	688
+אין לך מה לדאוג	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=857&wrkid=4450	קובי אושרת	857
+
+1975:
+גוליית	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=563&wrkid=813	כוורת	563
+מוכרחים להמשיך לנגן	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=447&wrkid=2077	יאיר רוזנבלום	447
+בארץ אהבתי השקד פורח	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=881&wrkid=527	רוחמה רז	881
+את ואני	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=975&wrkid=4668	שלמה ארצי	975
+כמו צמח בר	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=383&wrkid=1753	חוה אלברשטיין	383
+
+1976:
+אמור שלום	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=58&wrkid=354	אהוד מנור	58
+דמדומים	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=843&wrkid=4126	צביקה פיק	843
+הללויה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=332&wrkid=1148	הגבעטרון	332
+סוף עונת התפוזים	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=960&wrkid=2374	שלום חנוך	960
+לו לו	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=563&wrkid=6568	כוורת	563
+
+1977:
+סליחות	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=462&wrkid=2413	יהודית רביץ	462
+בלילה על הדשא	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=447&wrkid=679	יאיר רוזנבלום	447
+אהבה בסוף הקיץ	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=843&wrkid=48	צביקה פיק	843
+אדון עולם	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=778&wrkid=20027	עוזי חיטמן	778
+רקפת	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=881&wrkid=4268	רוחמה רז	881
+
+1978:
+נאסף תשרי	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=843&wrkid=2269	צביקה פיק	843
+אבניבי	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=518&wrkid=17	יזהר כהן	518
+עטור מצחך	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=166&wrkid=2515	אריק איינשטיין	166
+עוד לא אהבתי די	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=465&wrkid=3251	יהורם גאון	465
+רציתי שתדע	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=778&wrkid=4047	עוזי חיטמן	778
+
+1979:
+מרי לו	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=843&wrkid=2230	צביקה פיק	843
+שיר הפרחה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=820&wrkid=2982	עופרה חזה	820
+לא אני הוא האיש	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=843&wrkid=4124	צביקה פיק	843
+גן נעול	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=901&wrkid=2669	רחל	901
+תשע בכיכר	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=223&wrkid=3676	גזוז	223
+
+
+
+
+
+1980:
+כל חיי	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=30&wrkid=8249	אבי טולדנו	30
+אני שומע שוב	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=975&wrkid=2994	שלמה ארצי	975
+שיר לשירים	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=857&wrkid=7351	קובי אושרת	857
+דרך הכורכר	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=169&wrkid=913	אריק סיני	169
+אני הולך לבית שאן	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=270&wrkid=3734	גרי אקשטיין	270
+
+1981:
+לראות אותה היום	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=1021&wrkid=2015	תיסלם	1021
+רדיו חזק	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=1021&wrkid=2802	תיסלם	1021
+לא עוזב את העיר	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=975&wrkid=1835	שלמה ארצי	975
+סיון	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=450&wrkid=2386	יגאל בשן	450
+השתקפות	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=843&wrkid=5323	צביקה פיק	843
+
+1982:
+יום שישי	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=187&wrkid=1537	בנזין	187
+הורה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=30&wrkid=1022	אבי טולדנו	30
+הפרח בגני	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=373&wrkid=1218	זוהר ארגוב	373
+חופשי זה לגמרי לבד	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=187&wrkid=3402	בנזין	187
+דואט פרידה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=268&wrkid=871	גלי עטרי	268
+
+1983:
+חי	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=820&wrkid=1436	עופרה חזה	820
+בחברה להגנת הטבע	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=162&wrkid=612	אריאל זילבר	162
+בוקר של כיף	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=1021&wrkid=609	תיסלם	1021
+יושב על הגדר	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=166&wrkid=1551	אריק איינשטיין	166
+הרומבה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=301&wrkid=7589	דיויד ברוזה	301
+
+1984:
+
