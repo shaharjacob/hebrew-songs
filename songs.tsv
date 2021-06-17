@@ -805,6 +805,8 @@ song	link	artist_name	artist_id
 שומקום	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=34&wrkid=2917	אביב גפן	34
 שחור לבן	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=34&wrkid=19732	אביב גפן	34
 שיר הסמרטוטים	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=34&wrkid=2978	אביב גפן	34
+מצטער	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=56&wrkid=8286	אדם	56
+סוד	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=56&wrkid=2353	אדם	56
 אבגדה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=58&wrkid=10487	אהוד מנור	58
 אביב שלי	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=58&wrkid=16048	אהוד מנור	58
 אבל המנגינה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=58&wrkid=9659	אהוד מנור	58
@@ -4873,6 +4875,7 @@ song	link	artist_name	artist_id
 שיר אחד שמח	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=225&wrkid=10223	גידי גוב	225
 שיר הטמבל	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=225&wrkid=6075	גידי גוב	225
 שיר התעוררות	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=225&wrkid=2990	גידי גוב	225
+שלל שרב	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=225&wrkid=3083	גידי גוב	225
 אגדה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=268&wrkid=9921	גלי עטרי	268
 אדבר איתך	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=268&wrkid=33	גלי עטרי	268
 אהבה למרחקים ארוכים	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=268&wrkid=36996	גלי עטרי	268
@@ -8071,6 +8074,7 @@ song	link	artist_name	artist_id
 להתקרב	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=3963&wrkid=26928	הראל סקעת	3963
 לחלום	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=3963&wrkid=34957	הראל סקעת	3963
 למה לי לקחת ללב	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=3963&wrkid=1979	הראל סקעת	3963
+שיר הבטלנים	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=330&wrkid=2963	הבטלנים	330
 איזה כיף	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=333&wrkid=16558	הדג נחש	333
 אינני בוגד	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=333&wrkid=41622	הדג נחש	333
 אני מאמין	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=333&wrkid=26766	הדג נחש	333
@@ -21899,6 +21903,7 @@ song	link	artist_name	artist_id
 עטוף ברחמים	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=905&wrkid=2513	ריטה	905
 עלית לי בזיכרון	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=905&wrkid=5660	ריטה	905
 עצום את עיניך אחי	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=905&wrkid=2577	ריטה	905
+שביל הבריחה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=905&wrkid=2883	ריטה	905
 אהבה סוג ב'	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=920&wrkid=58	רמי קלינשטיין	920
 אהבה פשוטה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=920&wrkid=40424	רמי קלינשטיין	920
 אהביני	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=920&wrkid=65	רמי קלינשטיין	920
@@ -23822,6 +23827,7 @@ song	link	artist_name	artist_id
 שיר הקירבה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=975&wrkid=2985	שלמה ארצי	975
 שיר התנועה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=975&wrkid=21318	שלמה ארצי	975
 שיר על ארץ סיני	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=975&wrkid=4138	שלמה ארצי	975
+תרקוד	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=975&wrkid=3229	שלמה ארצי	975
 אבא	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=1015&wrkid=3358	שרית חדד	1015
 אבא גדול	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=1015&wrkid=45510	שרית חדד	1015
 אבודה בלעדיך	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=1015&wrkid=3364	שרית חדד	1015

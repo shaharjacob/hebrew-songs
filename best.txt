@@ -102,4 +102,44 @@
 הרומבה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=301&wrkid=7589	דיויד ברוזה	301
 
 1984:
+תרקוד	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=975&wrkid=3229	שלמה ארצי	975
+בפרדס ליד השוקת	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=465&wrkid=733	יהורם גאון	465
+רוב הזמן את אישתי	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=975&wrkid=2805	שלמה ארצי	975
+אצלי הכל בסדר	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=183&wrkid=454	בועז שרעבי	183
+משמרת לילה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=187&wrkid=3818	בנזין	187
+
+1985:
+אנחנו נשארים בארץ	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=450&wrkid=3877	יגאל בשן	450
+עולה עולה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=857&wrkid=2498	קובי אושרת	857
+מחכים למשיח	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=960&wrkid=2091	שלום חנוך	960
+עוד נגיע	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=552&wrkid=5983	ירדנה ארזי	552
+אדמה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=820&wrkid=43	עופרה חזה	820
+
+1986:
+שביל הבריחה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=905&wrkid=2883	ריטה	905
+נרקוד נשכח	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=975&wrkid=2336	שלמה ארצי	975
+שוב בתמונה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=552&wrkid=4626	ירדנה ארזי	552
+רכבת לילה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=686&wrkid=2846	משינה	686
+אסמרלדה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=268&wrkid=8064	גלי עטרי	268
+
+1987:
+באה מאהבה	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=462&wrkid=517	יהודית רביץ	462
+שלל שרב	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=225&wrkid=3083	גידי גוב	225
+סוד	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=56&wrkid=2353	אדם	56
+שיר הבטלנים	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=330&wrkid=2963	הבטלנים	330
+כשהצועני אוהב	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=552&wrkid=5390	ירדנה ארזי	552
+
+1988:
+מצטער	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=56&wrkid=8286	אדם	56
+נפאל	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=268&wrkid=2328	גלי עטרי	268
+עגילי דמאר	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=552&wrkid=4351	ירדנה ארזי	552
+בן אדם	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=552&wrkid=3517	ירדנה ארזי	552
+עטוף ברחמים	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=905&wrkid=2513	ריטה	905
+
+1989:
+איך הוא שר	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=316&wrkid=171	דני רובס	316
+בדרך אל הים	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=686&wrkid=559	משינה	686
+מלנכולי	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=338&wrkid=2171	החברים של נטאשה	338
+האיש מן החלום	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=552&wrkid=5605	ירדנה ארזי	552
+הצילו	https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=323&wrkid=4885	דפנה דקל	323
 

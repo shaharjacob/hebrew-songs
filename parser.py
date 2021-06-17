@@ -166,6 +166,4 @@ def add_year_to_data(input: str, output: str):
             new_df.to_csv(output, sep="\t", index=False, encoding='utf-8')
 
 if __name__ == '__main__':
-    # build_tsv('data2.tsv')
-    # get_artist_songs(load=True, save=False)
-    add_year_to_data('data_with_years.tsv', 'data_with_years2.tsv')
+    pass
