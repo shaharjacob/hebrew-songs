@@ -157,17 +157,15 @@ def build_tsv(output: str):
 def add_year_to_data(input: str, output: str):
     df = pandas.read_csv(input, sep='\t')
     dict_to_edit = df.to_dict('records')
-    count = 0
+    i = 0
     for row in tqdm(dict_to_edit):
         row["year"] = get_song_year(row["song"], row["artist_name"])
-        if row["year"] == -1:
-            count += 1
-            print(count)
-
-    new_df = DataFrame(dict_to_edit)
-    new_df.to_csv(output, sep="\t", index=False, encoding='utf-8')
+        i += 1
+        if i % 50 == 0:
+            new_df = DataFrame(dict_to_edit)
+            new_df.to_csv(output, sep="\t", index=False, encoding='utf-8')
 
 if __name__ == '__main__':
     # build_tsv('data2.tsv')
     # get_artist_songs(load=True, save=False)
-    add_year_to_data('data.tsv', 'data_with_years.tsv')
+    add_year_to_data('data_with_years.tsv', 'data_with_years2.tsv')
