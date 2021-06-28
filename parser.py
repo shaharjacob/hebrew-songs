@@ -162,7 +162,31 @@ def add_hit_to_data(input: str, output: str):
     new_df = DataFrame(dict_to_edit)
     new_df.to_csv(output, sep="\t", index=False, encoding='utf-8')
 
+def update_hit():
+    hits = pandas.read_csv("bla.csv")
+    data = pandas.read_csv("data_with_years2.tsv", sep='\t')
+    data_to_edit = data.to_dict('records')
+    count = 0
+    for i, hit in hits.iterrows():
+        for row in data_to_edit:
+            if hit["song"] == row["song"] and hit["link"] == row["link"] and hit["artist_name"] == row["artist_name"] and str(hit["artist_id"]) == str(row["artist_id"])[:-2]:
+                row["hit"] = hit["hit"]
+                row["year"] = hit["year"]
+                row["artist_id"] = hit["artist_id"]
+                count += 1
+    print(count)
+    new_df = DataFrame(data_to_edit)
+    new_df.to_csv("data_with_years.tsv", sep="\t", index=False, encoding='utf-8')
+
 if __name__ == '__main__':
+    ######################################
+    ## NO NEED TO USE THIS FILE ANYMORE ##
+    ######################################
+    pass
+
+
+
     # build_tsv(output="temp.tsv")
     # add_year_to_data(input="temp.tsv", output="temp2.tsv")
-    add_hit_to_data('temp2.tsv', 'temp3.tsv')
+    # add_hit_to_data('temp2.tsv', 'temp3.tsv')
+    # update_hit()
