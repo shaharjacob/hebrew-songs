@@ -178,6 +178,12 @@ def update_hit():
     new_df = DataFrame(data_to_edit)
     new_df.to_csv("data_with_years.tsv", sep="\t", index=False, encoding='utf-8')
 
+
+def drop_non_year():
+    df = pandas.read_csv("data.tsv", sep='\t')
+    df = df[df['year'] != "-1"]
+    df.to_csv("data2.tsv", sep="\t", index=False, encoding='utf-8')
+
 if __name__ == '__main__':
     ######################################
     ## NO NEED TO USE THIS FILE ANYMORE ##
@@ -190,3 +196,4 @@ if __name__ == '__main__':
     # add_year_to_data(input="temp.tsv", output="temp2.tsv")
     # add_hit_to_data('temp2.tsv', 'temp3.tsv')
     # update_hit()
+    # drop_non_year()
