@@ -16,7 +16,12 @@ ABC = 'abcdefghijklmnopqrstuvwxysABCDEFGHIJKLMNOPQRSTUVWXYZ'
 GOOGLE_URL = 'https://www.google.com'
 
 arr = [
-    'חנן בן ארי',
+    'סטטיק ובן אל תבורי',
+    'עדן בן זקן',
+    'אליעד נחום',
+    'עדן חסון',
+    'איתי לוי',
+    'נועה קירל',
 ]
 
 def read_url(url: str, decode: bool = True) -> str:
@@ -113,7 +118,7 @@ def get_song_year(artist: str, song: str) -> int:
     try:
         content = read_url(url, decode=False)
         soup = BeautifulSoup(content, 'html.parser')
-        return int(soup.find("span", string="תאריך הפצה").find_parent().find_parent().find_all('div')[-1].text.strip())
+        return soup.find("span", string="תאריך הפצה").find_parent().find_parent().find_all('div')[-1].text.strip()
     except:
         secho(f"[WARNING] could not parse {url}", fg="red")
         return -1
@@ -151,7 +156,7 @@ def add_hit_to_data(input: str, output: str):
     for row in tqdm(dict_to_edit):
         row["hit"] = 0
         try:
-            row["year"] = int(row["year"])
+            row["year"] = str(row["year"])[:-2]
         except:
             row["year"] = -1
     new_df = DataFrame(dict_to_edit)
