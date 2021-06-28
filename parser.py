@@ -16,34 +16,7 @@ ABC = 'abcdefghijklmnopqrstuvwxysABCDEFGHIJKLMNOPQRSTUVWXYZ'
 GOOGLE_URL = 'https://www.google.com'
 
 arr = [
-    'איפה הילד',
-    'בנזין',
-    'בוטן מתוק בקרקס',
-    'גזוז',
-    'גליקריה',
-    'הדורבנים',
-    'החברים של נטאשה',
-    'החלונות הגבוהים',
-    'המכשפות',
-    'התבלינים',
-    'התרנגולים',
-    'זוהר ארגוב',
-    'זקני צפת',
-    'חיים משה',
-    'יפה ירקוני',
-    'יציאת חירום',
-    'ירדנה ארזי',
-    'כוורת',
-    'כנסיית השכל',
-    'להקת הנח"ל',
-    'להקת חיל הים',
-    'משינה',
-    'מלי לוי',
-    'סנדי בר',
-    'רוקפור',
-    'שב"ק מיוזיק',
-    'שלישיית מה קשור',
-    'שלישיית גשר הירקון',
+    'עומר אדם',
 ]
 
 def read_url(url: str, decode: bool = True) -> str:
@@ -147,7 +120,7 @@ def get_song_year(artist: str, song: str) -> int:
 
 
 def build_tsv(output: str):
-    songs = get_artist_songs()
+    songs = get_artist_songs(load=False)
     for song in tqdm(songs):
         song["lyrics"] = get_song_lyrics(song["link"])
     df = DataFrame(songs)
@@ -165,5 +138,15 @@ def add_year_to_data(input: str, output: str):
             new_df = DataFrame(dict_to_edit)
             new_df.to_csv(output, sep="\t", index=False, encoding='utf-8')
 
+
+def add_hit_to_data(input: str, output: str):
+    df = pandas.read_csv(input, sep='\t')
+    dict_to_edit = df.to_dict('records')
+    for row in tqdm(dict_to_edit):
+        row["hit"] = 0
+    new_df = DataFrame(dict_to_edit)
+    new_df.to_csv(output, sep="\t", index=False, encoding='utf-8')
+
 if __name__ == '__main__':
-    pass
+    build_tsv(output="temp.tsv")
+    # add_hit_to_data('data_with_years.tsv', 'data_with_years2.tsv')
