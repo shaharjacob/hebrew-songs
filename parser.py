@@ -16,7 +16,7 @@ ABC = 'abcdefghijklmnopqrstuvwxysABCDEFGHIJKLMNOPQRSTUVWXYZ'
 GOOGLE_URL = 'https://www.google.com'
 
 arr = [
-    'עומר אדם',
+    'חנן בן ארי',
 ]
 
 def read_url(url: str, decode: bool = True) -> str:
@@ -113,7 +113,7 @@ def get_song_year(artist: str, song: str) -> int:
     try:
         content = read_url(url, decode=False)
         soup = BeautifulSoup(content, 'html.parser')
-        return soup.find("span", string="תאריך הפצה").find_parent().find_parent().find_all('div')[-1].text.strip()
+        return int(soup.find("span", string="תאריך הפצה").find_parent().find_parent().find_all('div')[-1].text.strip())
     except:
         secho(f"[WARNING] could not parse {url}", fg="red")
         return -1
@@ -122,7 +122,11 @@ def get_song_year(artist: str, song: str) -> int:
 def build_tsv(output: str):
     songs = get_artist_songs(load=False)
     for song in tqdm(songs):
-        song["lyrics"] = get_song_lyrics(song["link"])
+        try:
+            song["lyrics"] = get_song_lyrics(song["link"])
+        except:
+            secho(f"couldnt parse {song['song']}", fg="red", bold=True)
+            song["lyrics"] = "להשלים להשלים להשלים"
     df = DataFrame(songs)
     df.to_csv(output, sep="\t", index=False, encoding='utf-8')
 
@@ -137,16 +141,23 @@ def add_year_to_data(input: str, output: str):
         if i % 50 == 0:
             new_df = DataFrame(dict_to_edit)
             new_df.to_csv(output, sep="\t", index=False, encoding='utf-8')
-
+    if len(dict_to_edit) < 50:
+        new_df = DataFrame(dict_to_edit)
+        new_df.to_csv(output, sep="\t", index=False, encoding='utf-8')
 
 def add_hit_to_data(input: str, output: str):
     df = pandas.read_csv(input, sep='\t')
     dict_to_edit = df.to_dict('records')
     for row in tqdm(dict_to_edit):
         row["hit"] = 0
+        try:
+            row["year"] = int(row["year"])
+        except:
+            row["year"] = -1
     new_df = DataFrame(dict_to_edit)
     new_df.to_csv(output, sep="\t", index=False, encoding='utf-8')
 
 if __name__ == '__main__':
-    build_tsv(output="temp.tsv")
-    # add_hit_to_data('data_with_years.tsv', 'data_with_years2.tsv')
+    # build_tsv(output="temp.tsv")
+    # add_year_to_data(input="temp.tsv", output="temp2.tsv")
+    add_hit_to_data('temp2.tsv', 'temp3.tsv')
