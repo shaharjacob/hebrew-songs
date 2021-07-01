@@ -1,7 +1,7 @@
 from typing import List, Tuple, Dict
 from collections import Counter
 
-import pandas
+import pandas as pd
 import seaborn as sns
 from click import secho
 import matplotlib.pyplot as plt
@@ -13,7 +13,7 @@ DECADES = [1970, 1980, 1990, 2000, 2010, 2020]
 
 class HebrewSongs:
     def __init__(self, path: str):
-         self.data: DataFrame = pandas.read_csv(path, sep='\t')
+         self.data: DataFrame = pd.read_csv(path, sep='\t')
          self.stop_words: List[str] = HebrewSongs.get_stop_words()
 
     def get_decade(self, decade: int) -> DataFrame:
@@ -80,7 +80,7 @@ class HebrewSongs:
 
 
 if __name__ == '__main__':
-    model = HebrewSongs('data_copy_with_years.tsv')
+    model = HebrewSongs('data.tsv')
     # model.get_most_common(n=40, use_stopwords=True)
     model.get_ngram_most_common(n=40)
 
