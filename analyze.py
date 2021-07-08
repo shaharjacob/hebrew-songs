@@ -24,6 +24,8 @@ DECADES = [1970, 1980, 1990, 2000, 2010, 2020]
 class HebrewSongs:
     def __init__(self, path: str):
         self.data: DataFrame = pd.read_csv(path, sep='\t')
+        self.data['decade'] = [int(int(year) / 10) * 10 if type(year) != float and year.isdigit() else 0 for year in
+                               self.data["year"]]
         self.stop_words: List[str] = HebrewSongs.get_stop_words()
 
     def get_decade(self, decade: int) -> DataFrame:
@@ -31,7 +33,7 @@ class HebrewSongs:
             secho(f"[ERROR] decade ({decade}) should be one of the following:", fg="red", bold=True)
             secho(f"        {DECADES}", fg="red")
             exit(1)
-        return self.data.loc[(self.data['year'] >= decade) & (self.data['year'] <= (decade + 9))]
+        return self.data.loc[(int(self.data['year']) >= decade) & (int(self.data['year']) <= (decade + 9))]
 
     def get_year(self, year: int) -> DataFrame:
         return self.data.loc[self.data['year'] == year]
@@ -44,7 +46,7 @@ class HebrewSongs:
         return [word for i in words for word in i]
 
     def get_most_common(self, n: int, decade: int = None, use_stopwords: bool = True):
-        corpus: List[str] = self.get_lyrics(self.get_decade(decade) if decade else DataFrame())
+        corpus: List[str] = self.get_lyrics(self.data[self.data['decade']==decade])
         counter = Counter(corpus)
         most = counter.most_common()
         x, y = [], []
@@ -69,10 +71,14 @@ class HebrewSongs:
                                self.data["year"]]
         print(self.data[["lyrics_len", "decade"]].groupby("decade").mean())
 
-    def get_ngram_most_common(self, n: int, df: DataFrame = DataFrame()):
-        all_lyrics: Series = self.data["lyrics"] if df.empty else df["lyrics"]
+    def get_ngram_most_common(self, n: int, df: DataFrame = DataFrame(),decade = None):
+        data = self.data
+        if decade is not None:
+            data = self.data[self.data['decade']==decade]
 
-        vec = CountVectorizer(ngram_range=(3, 4)).fit(all_lyrics)
+        all_lyrics: Series = data["lyrics"] if df.empty else df["lyrics"]
+
+        vec = CountVectorizer(ngram_range=(3, 4),lowercase=True, binary=True).fit(all_lyrics)
         bag_of_words = vec.transform(all_lyrics)
         sum_words = bag_of_words.sum(axis=0)
         words_freq = [(word, sum_words[0, idx])
@@ -83,12 +89,36 @@ class HebrewSongs:
         #                       and bigram[0].split()[0] not in stop_words)][:20]
         x, y = map(list, zip(*top_n_bigrams))
         sns.barplot(x=y, y=HebrewSongs.invert_words(x))
-        plt.show()
+        # plt.show()
+        return x
+
+    def uniqe_ngram_per_decade(self):
+        decades_words = {}
+        for decade in DECADES:
+            m = self.get_ngram_most_common(7, decade=decade)
+            decades_words[decade] = m
+        uniqe_per_decade = {}
+        for decade in DECADES:
+            words = decades_words[decade]
+            uniwq_words = []
+            for word in words:
+                seen = False
+                for d in DECADES:
+                    if d != decade:
+                        if word in decades_words[d]:
+                            seen = True
+                if not seen:
+                    uniwq_words.append(word)
+            uniqe_per_decade[decade] = uniwq_words
+        return uniqe_per_decade
 
     def learn(self):
-        df = DataFrame()
+        self.data['decade'] = [int(int(year) / 10) * 10 if type(year) != float and year.isdigit() else 0 for year in
+                               self.data["year"]]
+        self.data = self.data[self.data["decade"]>1970]
         X = self.data["lyrics"]
-        y = self.data["hit"]
+
+        y = self.data["decade"]
         vectorizer = CountVectorizer()
 
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -99,6 +129,7 @@ class HebrewSongs:
         mnb_prediction = mnb.predict(X_test)
         y_test = numpy.array(y_test)
         evaluate(mnb_prediction, y_test)
+
         return X_train, X_test, y_train, y_test, vectorizer
 
     @staticmethod
@@ -154,6 +185,23 @@ def deEmojify(text):
 
 
 if __name__ == '__main__':
-    # model = HebrewSongs('data.tsv')
-    # model.get_song_length_from_years()
-    write_test_and_train_csv()
+    model = HebrewSongs('data.tsv')
+    decades_words = {}
+    for decade in DECADES:
+        m = model.get_ngram_most_common(7,decade=decade)
+        decades_words[decade] = m
+    uniqe_per_decade = {}
+    for decade in DECADES:
+        words = decades_words[decade]
+        uniwq_words = []
+        for word in words:
+            seen = False
+            for d in DECADES:
+                if d != decade:
+                    if word in decades_words[d]:
+                        seen = True
+            if not seen:
+                uniwq_words.append(word)
+        uniqe_per_decade[decade] = uniwq_words
+    print(uniqe_per_decade)
+    # model.learn()
