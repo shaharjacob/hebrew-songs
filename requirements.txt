@@ -1,0 +1,8 @@
+numpy
+click
+pandas
+stanza
+seaborn
+sklearn
+datasets
+matplotlib
