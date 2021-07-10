@@ -1,20 +1,19 @@
-from typing import List, Tuple, Dict
+import re
+from typing import List, Tuple
 from collections import Counter
 
 import numpy
 import pandas as pd
 import seaborn as sns
-import stanza as stanza
-import re
 from click import secho
+import stanza as stanza
 import matplotlib.pyplot as plt
+from datasets import load_dataset
 from pandas import DataFrame, Series
 from pandas.core.strings import StringMethods
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
-from datasets import load_dataset
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
 from model_evaluater import evaluate
 
@@ -186,22 +185,27 @@ def deEmojify(text):
 
 if __name__ == '__main__':
     model = HebrewSongs('data.tsv')
-    decades_words = {}
-    for decade in DECADES:
-        m = model.get_ngram_most_common(7,decade=decade)
-        decades_words[decade] = m
-    uniqe_per_decade = {}
-    for decade in DECADES:
-        words = decades_words[decade]
-        uniwq_words = []
-        for word in words:
-            seen = False
-            for d in DECADES:
-                if d != decade:
-                    if word in decades_words[d]:
-                        seen = True
-            if not seen:
-                uniwq_words.append(word)
-        uniqe_per_decade[decade] = uniwq_words
-    print(uniqe_per_decade)
+    # decades_words = {}
+    # for decade in DECADES:
+    #     m = model.get_ngram_most_common(7,decade=decade)
+    #     decades_words[decade] = m
+    # uniqe_per_decade = {}
+    # for decade in DECADES:
+    #     words = decades_words[decade]
+    #     uniwq_words = []
+    #     for word in words:
+    #         seen = False
+    #         for d in DECADES:
+    #             if d != decade:
+    #                 if word in decades_words[d]:
+    #                     seen = True
+    #         if not seen:
+    #             uniwq_words.append(word)
+    #     uniqe_per_decade[decade] = uniwq_words
+    # print(uniqe_per_decade)
     # model.learn()
+
+    # artists = sorted(list(set(model.data["artist_name"].tolist())))
+    # arr = [f"{artist}," for artist in artists]
+    # with open("artists.csv", "w", encoding='utf-8') as f:
+    #     f.write("\n".join(arr))
