@@ -204,8 +204,3 @@ if __name__ == '__main__':
     #     uniqe_per_decade[decade] = uniwq_words
     # print(uniqe_per_decade)
     # model.learn()
-
-    # artists = sorted(list(set(model.data["artist_name"].tolist())))
-    # arr = [f"{artist}," for artist in artists]
-    # with open("artists.csv", "w", encoding='utf-8') as f:
-    #     f.write("\n".join(arr))
