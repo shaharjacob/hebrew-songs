@@ -184,16 +184,26 @@ def drop_non_year():
     df = df[df['year'] != "-1"]
     df.to_csv("data2.tsv", sep="\t", index=False, encoding='utf-8')
 
+
+def add_artists_gender():
+    artists_df = pandas.read_csv("artists.csv")
+    artists_dict = {}
+    for i, row in artists_df.iterrows():
+        artists_dict[row["artist_name"]] = row["gender"]
+
+    df = pandas.read_csv("data.tsv", sep='\t')
+    for i, row in df.iterrows():
+        df.loc[i, "gender"] = artists_dict[row["artist_name"]]
+
+    df.to_csv("data.tsv", sep="\t", index=False, encoding='utf-8')
+
+
 if __name__ == '__main__':
     ######################################
     ## NO NEED TO USE THIS FILE ANYMORE ##
     ######################################
-    pass
+    # pass
 
+    add_artists_gender()
 
-
-    # build_tsv(output="temp.tsv")
-    # add_year_to_data(input="temp.tsv", output="temp2.tsv")
-    # add_hit_to_data('temp2.tsv', 'temp3.tsv')
-    # update_hit()
-    # drop_non_year()
+    
