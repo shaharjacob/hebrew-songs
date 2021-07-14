@@ -111,6 +111,17 @@ class HebrewSongs:
                     uniwq_words.append(word)
             uniqe_per_decade[decade] = uniwq_words
         return uniqe_per_decade
+    def print_number_bits(self):
+        for decade in DECADES:
+            print(f"decade = {decade}")
+            self.get_number_bits(decade=decade)
+    def get_number_bits(self,decade):
+        lyrics = self.data[self.data['decade']==decade]['lyrics']
+        lyrics_len = 0
+        for l in lyrics:
+            lyrics_len+= len(l.split('\n\n'))
+        print(f"lyrics avrage = {lyrics_len/len(lyrics)}")
+
 
     def learn(self):
         self.data['decade'] = [int(int(year) / 10) * 10 if type(year) != float and year.isdigit() else 0 for year in
