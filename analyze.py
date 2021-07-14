@@ -1,4 +1,5 @@
 import re
+from time import sleep
 from typing import List, Tuple
 from collections import Counter
 
@@ -12,9 +13,13 @@ import matplotlib.pyplot as plt
 from datasets import load_dataset
 from pandas import DataFrame, Series
 from pandas.core.strings import StringMethods
+from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.datasets import load_iris
+from sklearn import tree
+from sklearn.tree import DecisionTreeClassifier, export_text
 
 from model_evaluater import evaluate
 
@@ -26,6 +31,7 @@ class HebrewSongs:
         self.data: DataFrame = pd.read_csv(path, sep='\t')
         self.data['decade'] = [int(int(year) / 10) * 10 if type(year) != float and year.isdigit() else 0 for year in
                                self.data["year"]]
+        self.data['lyrics_len'] = [len(lyric.split(' ')) for lyric in self.data['lyrics']]
         self.stop_words: List[str] = HebrewSongs.get_stop_words()
 
     def get_decade(self, decade: int) -> DataFrame:
@@ -156,7 +162,7 @@ class HebrewSongs:
         print(f"lyrics avrage = {lyrics_len/len(lyrics)}")
 
 
-    def learn(self):
+    def learn_from_lyrics(self):
         self.data['decade'] = [int(int(year) / 10) * 10 if type(year) != float and year.isdigit() else 0 for year in
                                self.data["year"]]
         self.data = self.data[self.data["decade"]>1970]
@@ -175,6 +181,28 @@ class HebrewSongs:
         evaluate(mnb_prediction, y_test)
 
         return X_train, X_test, y_train, y_test, vectorizer
+
+    def learn_decade(self):
+        learn_feature = 'gender'
+        X = self.data[['hit','decade','lyrics_len']]
+        # X = self.data["lyrics"]
+        vectorizer = CountVectorizer()
+        # X_train = vectorizer.fit_transform(X)
+        X_train = X
+        featurs = ['hit','decade','lyrics_len']
+
+
+        y= self.data[learn_feature]
+        decision_tree = DecisionTreeClassifier(random_state=0, max_depth=3)
+        decision_tree = decision_tree.fit(X_train, y)
+        r = export_text(decision_tree, feature_names=featurs)
+        res_pred = decision_tree.predict(X)
+        score = accuracy_score(y, res_pred)
+        decision_tree.score(X_train, y)
+        print(r)
+        print(score)
+        tree.plot_tree(decision_tree,feature_names=featurs)
+        plt.show()
 
     @staticmethod
     def get_stop_words():
@@ -230,7 +258,7 @@ def deEmojify(text):
 
 if __name__ == '__main__':
     model = HebrewSongs('data.tsv')
-    model.get_artists_gender(hits=True)
+    model.learn_decade()
     # decades_words = {}
     # for decade in DECADES:
     #     m = model.get_ngram_most_common(7,decade=decade)

@@ -25,5 +25,5 @@ def evaluate(predicted_labels, labels):
 
     print(f"Accuracy: {acc}")
     cm = confusion_matrix(labels,predicted_labels)
-    print('the matrix header: hit,no hit')
+    print(f'the matrix header: {labels}')
     print(cm)
