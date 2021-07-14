@@ -3,6 +3,7 @@ from typing import List, Tuple
 from collections import Counter
 
 import numpy
+import numpy as np
 import pandas as pd
 import seaborn as sns
 from click import secho
@@ -36,6 +37,39 @@ class HebrewSongs:
 
     def get_year(self, year: int) -> DataFrame:
         return self.data.loc[self.data['year'] == year]
+
+    def get_artists_gender(self, hits = False):
+        # 1 is a female and 0 is male 2 is band
+        male = 0
+        female = 1
+        band = 2
+        mans = []
+        females = []
+        bands = []
+
+        for decade in DECADES[:-1]:
+            data = self.data[self.data['decade']==decade]
+            if hits:
+                data = data[data['hit']==1]
+            gender_in_hist = data['gender'].value_counts(normalize=True)
+            mans.append(gender_in_hist[male]*100)
+            females.append(gender_in_hist[female]*100)
+            bands.append(gender_in_hist[band]*100)
+        p1 = plt.bar(DECADES[:-1], mans, 2, color='dodgerblue',label='man singers')
+        p2 = plt.bar(DECADES[:-1], females, 2, bottom=mans, color='deeppink',label='women singers')
+        p3 = plt.bar(DECADES[:-1], bands, 2,
+                     bottom=np.array(mans) + np.array(females), color='orange',label="bands")
+        if not hits:
+            plt.title('gender of artists')
+        else:
+            plt.title('gender of artists in hits')
+        plt.xlabel('decade')
+        plt.ylabel('precentage of singing gender')
+        plt.legend()
+        plt.show()
+        gender_total = data['gender'].value_counts(normalize=True)
+
+
 
     def get_lyrics(self, df: DataFrame = DataFrame()):
         all_lyrics: Series = self.data["lyrics"] if df.empty else df["lyrics"]
@@ -196,6 +230,7 @@ def deEmojify(text):
 
 if __name__ == '__main__':
     model = HebrewSongs('data.tsv')
+    model.get_artists_gender(hits=True)
     # decades_words = {}
     # for decade in DECADES:
     #     m = model.get_ngram_most_common(7,decade=decade)
