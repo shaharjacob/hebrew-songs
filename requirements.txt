@@ -1,4 +1,5 @@
 numpy
+torch
 click
 pandas
 stanza
@@ -6,3 +7,4 @@ seaborn
 sklearn
 datasets
 matplotlib
+transformers
