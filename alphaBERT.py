@@ -142,24 +142,9 @@ def initialize_model(epochs=3):
     """
     # Instantiate Bert Classifier
     bert_classifier = BertClassifier(freeze_bert=False)
-
-    # Tell PyTorch to run the model on GPU
     bert_classifier.to(device)
-
-    # Create the optimizer
-    optimizer = AdamW(bert_classifier.parameters(),
-                      lr=5e-5,    # Default learning rate
-                      eps=1e-8    # Default epsilon value
-                      )
-
-    # Total number of training steps
-    total_steps = len(train_dataloader) * epochs
-
-    # Set up the learning rate scheduler
-    scheduler = get_linear_schedule_with_warmup(optimizer,
-                                                num_warmup_steps=0, # Default value
-                                                num_training_steps=total_steps)
-    return bert_classifier, optimizer, scheduler
+    bert_classifier = torch.load("model", map_location=device)
+    return bert_classifier
 
 
 def set_seed(seed_value=42):
@@ -187,8 +172,7 @@ def predict_single_text(model: BertClassifier ,text: str, threshold: float = 0.7
 
 def runme():
     set_seed(42)
-    bert_classifier, _, _ = initialize_model(epochs=EPOCHS)
-    bert_classifier = torch.load("model", map_location=device)
+    bert_classifier = initialize_model(epochs=EPOCHS)
     text1 = "רובי יתותח אין עלייך בעולם אוהבים אותך"
     text2 = "אתה הנשיא הכי טוב שהיה פה הלוואי שיהיו עוד כמוך"
     text3 = "רובי ישמאלני חרא לא אכפת לך מהאזרחים פה בכלל!!"
