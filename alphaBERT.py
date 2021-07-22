@@ -1,4 +1,3 @@
-import time
 import random
 
 import torch
@@ -7,7 +6,7 @@ import pandas as pd
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
-from transformers import BertModel, BertTokenizerFast, AdamW, get_linear_schedule_with_warmup
+from transformers import BertModel, BertTokenizerFast
 
 alephbert = BertModel.from_pretrained('onlplab/alephbert-base')
 alephbert_tokenizer = BertTokenizerFast.from_pretrained('onlplab/alephbert-base')
@@ -24,7 +23,10 @@ y_train = train_data.label.values
 X_test = test_data.text.values
 y_test = test_data.label.values
 
-
+class Emotions:
+    norm=0
+    happy=1
+    sad = 2
 # Create a function to tokenize a set of texts
 def preprocessing_for_bert(data):
     """Perform required preprocessing steps for pretrained BERT.
@@ -138,6 +140,7 @@ class BertClassifier(nn.Module):
 
 
 def initialize_model(epochs=3):
+    set_seed(42)
     """Initialize the Bert Classifier, the optimizer and the learning rate scheduler.
     """
     # Instantiate Bert Classifier
@@ -169,23 +172,35 @@ def predict_single_text(model: BertClassifier ,text: str, threshold: float = 0.7
     else:
         return "V"
 
+def predict_single_text_with_norm(model: BertClassifier ,text: str, min_threshold: float = 0.3, max_threshold = 0.8):
+    prob = predict(model, text)
+    norm=0
+    happy=1
+    sad = 2
+    if prob[1] > min_threshold:
+        if prob[1]<max_threshold:
+            return norm
+        else:
+            return sad
+    else:
+        return happy
 
 def runme():
-    set_seed(42)
+    # set_seed(42)
     bert_classifier = initialize_model(epochs=EPOCHS)
-    text1 = "רובי יתותח אין עלייך בעולם אוהבים אותך"
-    text2 = "אתה הנשיא הכי טוב שהיה פה הלוואי שיהיו עוד כמוך"
-    text3 = "רובי ישמאלני חרא לא אכפת לך מהאזרחים פה בכלל!!"
+    text1 = "איזה איכסה לא כיף לי"
+    text2 = "איזה יום היום"
+    text3 = "אני אוכל דגנים"
     text4 = "אתה הנשיא הכי גרוע שהיה לנו רק פילגת והסתת"
-    res = predict_single_text(bert_classifier, text1, 0.7)
+    res = predict_single_text_with_norm(bert_classifier, text1, 0.3,0.8)
     print(res)
-    res = predict_single_text(bert_classifier, text2, 0.7)
+    res = predict_single_text_with_norm(bert_classifier, text2, 0.3,0.8)
     print(res)
-    res = predict_single_text(bert_classifier, text3, 0.7)
+    res = predict_single_text_with_norm(bert_classifier, text3, 0.3,0.8)
     print(res)
-    res = predict_single_text(bert_classifier, text4, 0.7)
+    res = predict_single_text_with_norm(bert_classifier, text4, 0.3,0.8)
     print(res)
 
 
-if __name__ == '__main__':
-    runme()
+# if __name__ == '__main__':
+#     runme()

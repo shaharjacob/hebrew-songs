@@ -1,5 +1,4 @@
 import re
-from time import sleep
 from typing import List, Tuple
 from collections import Counter
 
@@ -7,6 +6,7 @@ import numpy
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import torch
 from click import secho
 import stanza as stanza
 import matplotlib.pyplot as plt
@@ -16,15 +16,17 @@ from pandas.core.strings import StringMethods
 from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from sklearn.datasets import load_iris
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn import tree
 from sklearn.tree import DecisionTreeClassifier, export_text
+from tqdm import tqdm
 
+from alphaBERT import predict_single_text_with_norm, BertClassifier, device, set_seed, Emotions
 from model_evaluater import evaluate
 
 DECADES = [1970, 1980, 1990, 2000, 2010, 2020]
 
+EPOCHS = 3
 
 class HebrewSongs:
     def __init__(self, path: str):
@@ -33,6 +35,11 @@ class HebrewSongs:
                                self.data["year"]]
         self.data['lyrics_len'] = [len(lyric.split(' ')) for lyric in self.data['lyrics']]
         self.stop_words: List[str] = HebrewSongs.get_stop_words()
+        set_seed(42)
+        bert_classifier = BertClassifier(freeze_bert=False)
+        bert_classifier.to(device)
+        bert_classifier = torch.load("model", map_location=device)
+        self.bert_classifier  = bert_classifier
 
     def get_decade(self, decade: int) -> DataFrame:
         if decade not in DECADES:
@@ -161,6 +168,49 @@ class HebrewSongs:
             lyrics_len+= len(l.split('\n\n'))
         print(f"lyrics avrage = {lyrics_len/len(lyrics)}")
 
+    def analyze_song_sintiment(self):
+        songs_sentiment = []
+        print(len(self.data))
+
+        for index, row in tqdm(self.data.iterrows()):
+            lyrics = row['lyrics']
+            song_lines = get_songs_lines(lyrics)
+            all_song = []
+            for line in song_lines:
+                prediction = predict_single_text_with_norm(self.bert_classifier, line, 0.3,0.8)
+                all_song.append(prediction)
+            if all_song.count(Emotions.sad)/len(all_song)>0.2:
+                song_sentiment = Emotions.sad
+            elif all_song.count(Emotions.happy)/len(all_song)>0.9:
+                song_sentiment = Emotions.happy
+            else:
+                song_sentiment = Emotions.norm
+            songs_sentiment.append(song_sentiment)
+        print('to csv')
+        print(songs_sentiment)
+        self.data['song_sentiment'] = songs_sentiment
+        self.data.to_csv('tagged_data.csv')
+
+    def add_name_in_song(self):
+        name_in_song = []
+        for index, row in self.data.iterrows():
+            first_name = row['artist_name'].split()[0]
+            lyrics = row['lyrics']
+            name_in_song.append(first_name in lyrics.split(' '))
+            if first_name in lyrics.split(' '):
+                print(first_name)
+        self.data['artist_name_in_song'] = name_in_song
+        a = self.data[["artist_name_in_song", "decade"]].groupby("decade").mean()
+        plt.scatter(DECADES,[a['artist_name_in_song'][decade]for decade in DECADES],s=40,color='blue')
+        plt.title('artist name in a song')
+        plt.xlabel('decade')
+        plt.ylabel('num of songs with singer names in the song / total')
+        plt.legend()
+        plt.show()
+
+
+
+
 
     def learn_from_lyrics(self):
         self.data['decade'] = [int(int(year) / 10) * 10 if type(year) != float and year.isdigit() else 0 for year in
@@ -255,10 +305,15 @@ def deEmojify(text):
                                         "]+", flags=re.UNICODE)
     return regrex_pattern.sub(r'', text)
 
+def get_songs_lines(song) -> List[str]:
+    song_lines_not_filtered = song.split('\n')
+    song_lines = [line  for line in song_lines_not_filtered if line !='']
+    return song_lines
 
 if __name__ == '__main__':
     model = HebrewSongs('data.tsv')
-    model.learn_decade()
+    model.analyze_song_sintiment()
+    # model.get_number_bits(1990)
     # decades_words = {}
     # for decade in DECADES:
     #     m = model.get_ngram_most_common(7,decade=decade)
