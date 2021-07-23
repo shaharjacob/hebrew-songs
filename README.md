@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/logo.png?raw=true" width="800px" alt="hebrew-songs"/>
+<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/logo.png?raw=true" width="840px" alt="hebrew-songs"/>
 </div>  
 
 ## :dart: Goal
