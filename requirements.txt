@@ -6,5 +6,7 @@ stanza
 seaborn
 sklearn
 datasets
+requests
 matplotlib
 transformers
+beautifulsoup4

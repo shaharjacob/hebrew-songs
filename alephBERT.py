@@ -15,8 +15,8 @@ MAX_LEN = 64
 BATCH_SIZE = 16
 EPOCHS = 3
 
-train_data = pd.read_csv('train_sentiment.csv')
-test_data = pd.read_csv('test_sentiment.csv')
+train_data = pd.read_csv('data/train_sentiment.csv')
+test_data = pd.read_csv('data/test_sentiment.csv')
 
 X_train = train_data.text.values
 y_train = train_data.label.values

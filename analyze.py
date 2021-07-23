@@ -2,30 +2,27 @@ import re
 from typing import List, Tuple
 from collections import Counter, defaultdict
 
-import numpy
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 import seaborn as sns
-import torch
 from click import secho
 import stanza as stanza
 import matplotlib.pyplot as plt
 from datasets import load_dataset
 from pandas import DataFrame, Series
 from pandas.core.strings import StringMethods
+from sklearn import tree
 from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn import tree
 from sklearn.tree import DecisionTreeClassifier, export_text
-from tqdm import tqdm
 
-from alephBERT import predict_single_text_with_norm, BertClassifier, device, set_seed, Emotions
 from model_evaluater import evaluate
+from alephBERT import predict_single_text_with_norm, Emotions
 
 DECADES = [1970, 1980, 1990, 2000, 2010, 2020]
-
 EPOCHS = 3
 
 class HebrewSongs:
@@ -35,11 +32,6 @@ class HebrewSongs:
                                self.data["year"]]
         self.data['lyrics_len'] = [len(lyric.split(' ')) for lyric in self.data['lyrics']]
         self.stop_words: List[str] = HebrewSongs.get_stop_words()
-        # set_seed(42)
-        # bert_classifier = BertClassifier(freeze_bert=False)
-        # bert_classifier.to(device)
-        # bert_classifier = torch.load("model", map_location=device)
-        # self.bert_classifier  = bert_classifier
         self.add_name_in_song()
 
     def get_decade(self, decade: int) -> DataFrame:
@@ -223,7 +215,7 @@ class HebrewSongs:
         print('to csv')
         print(songs_sentiment)
         self.data['song_sentiment'] = songs_sentiment
-        self.data.to_csv('tagged_data.csv')
+        self.data.to_csv('data/tagged_data.csv')
     def words_more_then(self,num_times = 100):
         words_dict= defaultdict(int)
         freq_words = set()
@@ -322,7 +314,7 @@ class HebrewSongs:
         mnb = MultinomialNB()
         mnb.fit(X_train, y_train)
         mnb_prediction = mnb.predict(X_test)
-        y_test = numpy.array(y_test)
+        y_test = np.array(y_test)
         evaluate(mnb_prediction, y_test)
 
         return X_train, X_test, y_train, y_test, vectorizer
@@ -388,7 +380,7 @@ def write_test_and_train_csv():
                 texts.append(deEmojify(text))
 
         df = pd.DataFrame({'label': labels, 'text': texts}, columns=['label', 'text'])
-        df.to_csv(f'{data_type}_sentiment.csv')
+        df.to_csv(f'data/{data_type}_sentiment.csv')
 
 
 def deEmojify(text):
@@ -406,6 +398,6 @@ def get_songs_lines(song) -> List[str]:
     return song_lines
 
 if __name__ == '__main__':
-    model = HebrewSongs('tagged_data.csv')
+    model = HebrewSongs('data/tagged_data.csv')
     model.get_sad_songs()
     # model.guess_the_artist(['שירי מימון','שלומי שבת','הדג נחש','שרית חדד','כוורת','עומר אדם','אייל גולן','נועה קירל','שלמה ארצי'])
