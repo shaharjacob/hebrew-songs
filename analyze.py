@@ -21,7 +21,7 @@ from sklearn import tree
 from sklearn.tree import DecisionTreeClassifier, export_text
 from tqdm import tqdm
 
-from alphaBERT import predict_single_text_with_norm, BertClassifier, device, set_seed, Emotions
+from alephBERT import predict_single_text_with_norm, BertClassifier, device, set_seed, Emotions
 from model_evaluater import evaluate
 
 DECADES = [1970, 1980, 1990, 2000, 2010, 2020]
