@@ -45,7 +45,6 @@ class HebrewSongs:
         return self.data.loc[self.data['year'] == year]
 
     def get_artists_gender(self, hits = False):
-        # 1 is a female and 0 is male 2 is band
         male = 0
         female = 1
         band = 2
@@ -74,8 +73,6 @@ class HebrewSongs:
         plt.legend()
         plt.show()
         gender_total = data['gender'].value_counts(normalize=True)
-
-
 
     def get_lyrics(self, df: DataFrame = DataFrame()):
         all_lyrics: Series = self.data["lyrics"] if df.empty else df["lyrics"]
@@ -108,10 +105,8 @@ class HebrewSongs:
         male = 0
         female = 1
         band = 2
-        results = {}
         sad_songs = []
         happy_songs = []
-        band_res = []
         for gender in [male,female,band]:
             decade_data = self.data[self.data["gender"] == gender]
             print(f'the gender is = {gender} ')
@@ -134,7 +129,6 @@ class HebrewSongs:
         plt.title("songs sentiment vs gender")
         plt.xticks(r + width / 2, ['male', 'female', 'band'])
         plt.legend()
-
         plt.show()
 
     def get_song_length_from_years(self):
@@ -161,7 +155,7 @@ class HebrewSongs:
         #                       and bigram[0].split()[0] not in stop_words)][:20]
         x, y = map(list, zip(*top_n_bigrams))
         sns.barplot(x=y, y=HebrewSongs.invert_words(x))
-        # plt.show()
+        plt.show()
         return x
 
     def uniqe_ngram_per_decade(self):
@@ -183,10 +177,12 @@ class HebrewSongs:
                     uniwq_words.append(word)
             uniqe_per_decade[decade] = uniwq_words
         return uniqe_per_decade
+    
     def print_number_bits(self):
         for decade in DECADES:
             print(f"decade = {decade}")
             self.get_number_bits(decade=decade)
+            
     def get_number_bits(self,decade):
         lyrics = self.data[self.data['decade']==decade]['lyrics']
         lyrics_len = 0
@@ -196,8 +192,6 @@ class HebrewSongs:
 
     def analyze_song_sintiment(self):
         songs_sentiment = []
-        print(len(self.data))
-
         for index, row in tqdm(self.data.iterrows()):
             lyrics = row['lyrics']
             song_lines = get_songs_lines(lyrics)
@@ -212,10 +206,10 @@ class HebrewSongs:
             else:
                 song_sentiment = Emotions.norm
             songs_sentiment.append(song_sentiment)
-        print('to csv')
-        print(songs_sentiment)
+
         self.data['song_sentiment'] = songs_sentiment
         self.data.to_csv('data/tagged_data.csv')
+        
     def words_more_then(self,num_times = 100):
         words_dict= defaultdict(int)
         freq_words = set()
@@ -241,17 +235,18 @@ class HebrewSongs:
                 name_in_song.append(first_name in lyrics.split(' ') )
             else:
                 name_in_song.append(False)
-
         self.data['artist_name_in_song'] = name_in_song
+        
     def plot_name_in_song(self):
         a = self.data[["artist_name_in_song", "decade"]].groupby("decade").mean()
-        plt.scatter(DECADES,[a['artist_name_in_song'][decade]for decade in DECADES],s=40,color='blue')
+        plt.scatter(DECADES, [a['artist_name_in_song'][decade] for decade in DECADES], s=40, color='blue')
         plt.title('artist name in a song')
         plt.xlabel('decade')
         plt.ylabel('num of songs with singer names in the song / total')
         plt.legend()
         plt.show()
-    def guess_from_words(self,artists_list):
+        
+    def guess_from_words(self, artists_list):
         learn_feature = 'artist_name'
         learn_artists = self.data[self.data['artist_name'].isin(artists_list)]
         print(learn_artists['artist_name'].value_counts())
@@ -271,10 +266,9 @@ class HebrewSongs:
         decision_tree.score(X_test, y_test)
         print(tree_text)
         print(score)
-    def guess_the_artist(self,artists_list,feature_check_name='artist_name'):
+        
+    def guess_the_artist(self, artists_list, feature_check_name='artist_name'):
         learn_feature = feature_check_name
-
-
         know_featurs = ['hit', 'decade', 'lyrics_len', 'song_sentiment',"artist_name_in_song"]
         # gapminder.year.isin(years)
         learn_artists = self.data[self.data[feature_check_name].isin(artists_list)]
@@ -298,13 +292,11 @@ class HebrewSongs:
         print(tree_text)
         print(score)
 
-
     def learn_from_lyrics(self):
         self.data['decade'] = [int(int(year) / 10) * 10 if type(year) != float and year.isdigit() else 0 for year in
                                self.data["year"]]
         self.data = self.data[self.data["decade"]>1970]
         X = self.data["lyrics"]
-
         y = self.data["decade"]
         vectorizer = CountVectorizer()
 
@@ -316,7 +308,6 @@ class HebrewSongs:
         mnb_prediction = mnb.predict(X_test)
         y_test = np.array(y_test)
         evaluate(mnb_prediction, y_test)
-
         return X_train, X_test, y_train, y_test, vectorizer
 
     def learn_decade(self):
@@ -327,8 +318,6 @@ class HebrewSongs:
         # X_train = vectorizer.fit_transform(X)
         X_train = X
         featurs = ['hit','decade','lyrics_len']
-
-
         y= self.data[learn_feature]
         decision_tree = DecisionTreeClassifier(random_state=0, max_depth=3)
         decision_tree = decision_tree.fit(X_train, y)
@@ -392,12 +381,32 @@ def deEmojify(text):
                                         "]+", flags=re.UNICODE)
     return regrex_pattern.sub(r'', text)
 
+
 def get_songs_lines(song) -> List[str]:
     song_lines_not_filtered = song.split('\n')
     song_lines = [line  for line in song_lines_not_filtered if line !='']
     return song_lines
 
+
 if __name__ == '__main__':
     model = HebrewSongs('data/tagged_data.csv')
+    
     model.get_sad_songs()
-    # model.guess_the_artist(['שירי מימון','שלומי שבת','הדג נחש','שרית חדד','כוורת','עומר אדם','אייל גולן','נועה קירל','שלמה ארצי'])
+    
+    model.get_artists_gender()
+    
+    model.get_song_length_from_years()
+    
+    model.plot_name_in_song()
+    
+    model.get_most_common(n=20, decade=None, use_stopwords=True)
+    model.get_most_common(n=20, decade=1980, use_stopwords=True)
+    
+    model.get_ngram_most_common(n=20, decade = None)
+    model.get_ngram_most_common(n=20, decade=2000)
+
+    artists_list = ['שירי מימון','שלומי שבת','הדג נחש','שרית חדד','כוורת','עומר אדם','אייל גולן','נועה קירל','שלמה ארצי']
+    model.guess_from_words(artists_list)
+    model.guess_the_artist(artists_list)
+    
+    model.learn_decade()
