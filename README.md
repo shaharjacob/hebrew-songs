@@ -4,7 +4,7 @@
 &nbsp;  
 
 ## :dart: Goal
-Our main goal is to ...  
+Our main goal is a better understanding of the development of Israeli music culture over the years based on a statistical analysis of the lyrics over the decades.   
 &nbsp;  
 
 ## :bar_chart: Results
@@ -17,7 +17,7 @@ model = HebrewSongs()
 model.get_artists_gender()
 ```  
 <div align="center">
-<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_artists_gender.png?raw=true" alt="get-artists-gender"/>
+<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_artists_gender.png?raw=true" width="500px" alt="get-artists-gender"/>
 </div>  
 &nbsp;  
 
@@ -30,20 +30,20 @@ model = HebrewSongs()
 model.model.get_most_common(20)
 ```  
 <div align="center">
-<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_most_common.png?raw=true" alt="get-most-common"/>
+<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_most_common.png?raw=true" width="500px"vvv alt="get-most-common"/>
 </div>  
 We can split it to differen decades:  
 ```bash
 model.model.get_most_common(20, decade=1970)
 ``` 
 <div align="center">
-<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_most_common_1970.png?raw=true" alt="get-most-common-1970"/>
+<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_most_common_1970.png?raw=true" width="500px" alt="get-most-common-1970"/>
 </div>  
 ```bash
 model.model.get_most_common(20, decade=2010)
 ``` 
 <div align="center">
-<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_most_common_2010.png?raw=true" alt="get-most-common-2010"/>
+<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_most_common_2010.png?raw=true" width="500px" alt="get-most-common-2010"/>
 </div>  
 &nbsp;  
 
@@ -53,14 +53,14 @@ Here we use the most common of secuences in length between 3 to 4.
 model.model.get_ngram_most_common(20, ngram_range=(3, 4))
 ```  
 <div align="center">
-<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_ngram_most_common_3_4.png?raw=true" alt="get-ngram-most-common-3-4"/>
+<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_ngram_most_common_3_4.png?raw=true" width="500px" alt="get-ngram-most-common-3-4"/>
 </div>  
 And for specific decade:  
 ```bash
 model.model.get_ngram_most_common(20, decade=2000, ngram_range=(3, 4))
 ```  
 <div align="center">
-<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_ngram_most_common_3_4_2000.png?raw=true" alt="get-ngram-most-common-3-4-2000"/>
+<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_ngram_most_common_3_4_2000.png?raw=true" width="500px" alt="get-ngram-most-common-3-4-2000"/>
 </div> 
 &nbsp;  
 
@@ -73,7 +73,7 @@ model = HebrewSongs()
 model.plot_name_in_song()
 ```  
 <div align="center">
-<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/plot_name_in_song.png?raw=true" alt="get-artists-gender"/>
+<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/plot_name_in_song.png?raw=true" width="500px" alt="get-artists-gender"/>
 </div>  
 &nbsp;  
 
@@ -89,7 +89,7 @@ model = HebrewSongs()
 model.get_emotions_plot()
 ```  
 <div align="center">
-<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_emotions_plot.png?raw=true" alt="get-emotions-plot"/>
+<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_emotions_plot.png?raw=true" width="500px" alt="get-emotions-plot"/>
 </div>  
 &nbsp;  
 
@@ -103,7 +103,7 @@ model = HebrewSongs()
 model.get_song_length_from_years()
 ```  
 <div align="center">
-<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_song_length_from_years.png?raw=true" alt="get-song-length-from-years"/>
+<img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_song_length_from_years.png?raw=true" width="500px" alt="get-song-length-from-years"/>
 </div>  
 &nbsp;  
 
