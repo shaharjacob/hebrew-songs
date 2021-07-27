@@ -22,11 +22,7 @@ X_train = train_data.text.values
 y_train = train_data.label.values
 X_test = test_data.text.values
 y_test = test_data.label.values
-
-class Emotions:
-    norm=0
-    happy=1
-    sad = 2
+    
 # Create a function to tokenize a set of texts
 def preprocessing_for_bert(data):
     """Perform required preprocessing steps for pretrained BERT.
