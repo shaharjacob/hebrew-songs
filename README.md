@@ -15,7 +15,7 @@ from analyze import HebrewSongs
 
 model = HebrewSongs()
 model.get_artists_gender()
-```  
+```
 <div align="center">
 <img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_artists_gender.png?raw=true" width="500px" alt="get-artists-gender"/>
 </div>  
@@ -29,7 +29,7 @@ from analyze import HebrewSongs
 
 model = HebrewSongs()
 model.model.get_most_common(20)
-```  
+```
 <div align="center">
 <img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_most_common.png?raw=true" width="500px"vvv alt="get-most-common"/>
 </div>  
@@ -37,14 +37,14 @@ We can split it to differen decades:
 
 ```bash
 model.model.get_most_common(20, decade=1970)
-``` 
+```
 <div align="center">
 <img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_most_common_1970.png?raw=true" width="500px" alt="get-most-common-1970"/>
 </div>  
 
 ```bash
 model.model.get_most_common(20, decade=2010)
-``` 
+```
 <div align="center">
 <img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_most_common_2010.png?raw=true" width="500px" alt="get-most-common-2010"/>
 </div>  
@@ -55,7 +55,7 @@ Here we use the most common of secuences in length between 3 to 4.
 
 ```bash
 model.model.get_ngram_most_common(20, ngram_range=(3, 4))
-```  
+```
 <div align="center">
 <img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_ngram_most_common_3_4.png?raw=true" width="500px" alt="get-ngram-most-common-3-4"/>
 </div>  
@@ -63,7 +63,7 @@ And for specific decade:
 
 ```bash
 model.model.get_ngram_most_common(20, decade=2000, ngram_range=(3, 4))
-```  
+```
 <div align="center">
 <img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_ngram_most_common_3_4_2000.png?raw=true" width="500px" alt="get-ngram-most-common-3-4-2000"/>
 </div> 
@@ -77,7 +77,7 @@ from analyze import HebrewSongs
 
 model = HebrewSongs()
 model.plot_name_in_song()
-```  
+```
 <div align="center">
 <img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/plot_name_in_song.png?raw=true" width="500px" alt="get-artists-gender"/>
 </div>  
@@ -94,7 +94,7 @@ from analyze import HebrewSongs
 
 model = HebrewSongs()
 model.get_emotions_plot()
-```  
+```
 <div align="center">
 <img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_emotions_plot.png?raw=true" width="500px" alt="get-emotions-plot"/>
 </div>  
@@ -109,7 +109,7 @@ from analyze import HebrewSongs
 
 model = HebrewSongs()
 model.get_song_length_from_years()
-```  
+```
 <div align="center">
 <img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_song_length_from_years.png?raw=true" width="500px" alt="get-song-length-from-years"/>
 </div>  
