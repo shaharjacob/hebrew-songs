@@ -23,6 +23,7 @@ model.get_artists_gender()
 
 #### :clipboard: Most common words
 Here we check the most common words (single word)  
+
 ```bash
 from analyze import HebrewSongs
 
@@ -32,13 +33,15 @@ model.model.get_most_common(20)
 <div align="center">
 <img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_most_common.png?raw=true" width="500px"vvv alt="get-most-common"/>
 </div>  
-We can split it to differen decades:  
+We can split it to differen decades:
+
 ```bash
 model.model.get_most_common(20, decade=1970)
 ``` 
 <div align="center">
 <img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_most_common_1970.png?raw=true" width="500px" alt="get-most-common-1970"/>
 </div>  
+
 ```bash
 model.model.get_most_common(20, decade=2010)
 ``` 
@@ -49,6 +52,7 @@ model.model.get_most_common(20, decade=2010)
 
 We also can do it for ngrams.  
 Here we use the most common of secuences in length between 3 to 4.  
+
 ```bash
 model.model.get_ngram_most_common(20, ngram_range=(3, 4))
 ```  
@@ -56,6 +60,7 @@ model.model.get_ngram_most_common(20, ngram_range=(3, 4))
 <img src="https://github.com/shaharjacob/hebrew-songs/blob/main/images/get_ngram_most_common_3_4.png?raw=true" width="500px" alt="get-ngram-most-common-3-4"/>
 </div>  
 And for specific decade:  
+
 ```bash
 model.model.get_ngram_most_common(20, decade=2000, ngram_range=(3, 4))
 ```  
@@ -66,6 +71,7 @@ model.model.get_ngram_most_common(20, decade=2000, ngram_range=(3, 4))
 
 #### :monkey_face: Artist's name in songs
 Here we check the frequencies of artists that say their own name in their songs.
+
 ```bash
 from analyze import HebrewSongs
 
@@ -82,6 +88,7 @@ Here we check if the songs are sad or happy.
 We fine tunning a pre-traning AlephBERT model, for sentiment analasis.  
 So we have model that get a song and return if the song is happy or sad.  
 We also create some graph which show the different between females, mans and bands:  
+
 ```bash
 from analyze import HebrewSongs
 
@@ -96,6 +103,7 @@ model.get_emotions_plot()
 #### :scroll: Length of songs per decade
 Here we check the length of the songs per decades.  
 Its interesting that new songs are much more longer.  
+
 ```bash
 from analyze import HebrewSongs
 
