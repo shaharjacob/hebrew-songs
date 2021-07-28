@@ -23,7 +23,7 @@ from model_evaluater import evaluate
 
 DECADES = [1970, 1980, 1990, 2000, 2010, 2020]
 EPOCHS = 3
-
+ISRAEL_WARS = ['1973','1982','1991' ,'1993' ,'2008' ,'2012','2014','2021']
 class Emotions:
     norm=0
     happy=1
@@ -68,6 +68,7 @@ class HebrewSongs:
             data = self.data[self.data['decade']==decade]
             if hits:
                 data = data[data['hit']==1]
+                print(len(data))
             gender_in_hist = data['gender'].value_counts(normalize=True)
             mans.append(gender_in_hist[male]*100)
             females.append(gender_in_hist[female]*100)
@@ -112,6 +113,36 @@ class HebrewSongs:
         sns.barplot(x=y, y=HebrewSongs.invert_words(x),palette = 'Paired')
         plt.show()
 
+    def get_emotions_to_wars_plot(self):
+        sad_songs = []
+        happy_songs = []
+        for year in ['sad_years','non_sad']:
+            if year == 'sad_years':
+                decade_data = self.data[self.data['year'].isin(ISRAEL_WARS)]
+            else:
+                decade_data = self.data[-self.data['year'].isin(ISRAEL_WARS)]
+
+            print(f'the years are  = {year} ')
+            count_values = decade_data["song_sentiment"].value_counts(normalize =True)
+            sad_songs.append(count_values[Emotions.sad])
+            happy_songs.append(count_values[Emotions.happy]+count_values[Emotions.norm])
+
+        n = 2
+        r = np.arange(n)
+        width = 0.25
+        print(sad_songs)
+        plt.bar(r, sad_songs, color='#a3ff58',
+                width=width, edgecolor='black',
+                label='sad songs')
+        plt.bar(r + width, happy_songs, color='#ff58a3',
+                width=width, edgecolor='black',
+                label='happy songs')
+        plt.ylabel("songs emotion ")
+        plt.title("songs sentiment in war years")
+        plt.xticks(r + width / 2, ['war years', 'not war years'])
+        plt.legend()
+        plt.show()
+
     def get_emotions_plot(self):
         male = 0
         female = 1
@@ -122,8 +153,8 @@ class HebrewSongs:
             decade_data = self.data[self.data["gender"] == gender]
             print(f'the gender is = {gender} ')
             count_values =decade_data["song_sentiment"].value_counts(normalize =True)
-            sad_songs.append(count_values[Emotions.happy])
-            happy_songs.append(count_values[Emotions.sad+Emotions.norm])
+            sad_songs.append(count_values[Emotions.sad])
+            happy_songs.append(count_values[Emotions.happy]+count_values[Emotions.norm])
 
         n = 3
         r = np.arange(n)
@@ -433,15 +464,16 @@ def get_songs_lines(song) -> List[str]:
 if __name__ == '__main__':
     model = HebrewSongs()
     # model.get_song_length_from_years()
-    # model.get_artists_gender()
+    model.get_emotions_plot()
+    model.get_emotions_to_wars_plot()
     # model.get_most_common(20, decade=2010)
     # model.get_ngram_most_common(20, decade=2000, ngram_range=(3,4))
     # model.plot_name_in_song()
     # model.get_emotions_plot()
-    model.get_song_length_from_years()
+    # model.get_song_length_from_years()
     
     
     # ???
     # model.learn_decade()
-    model.uniqe_ngram_per_decade()
+    # model.uniqe_ngram_per_decade()
     # model.guess_the_artist(['שירי מימון','שלומי שבת','הדג נחש','שרית חדד','כוורת','עומר אדם','אייל גולן','נועה קירל','שלמה ארצי'])
