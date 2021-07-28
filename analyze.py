@@ -155,7 +155,7 @@ class HebrewSongs:
 
         width = 0.4
         barlist = plt.bar(np.arange(len(y)), y, width=width)
-        for i, color in enumerate(["#a3ff58", "#8a2be2", "#a52a2a", "#dc143c", "#4b0082", "#008000"]):
+        for i, color in enumerate(["#2AC3FF", "#FF2A7C", "#FF632A", "#FFC32A", "#DFFF2A", "#b9e769"]):
             barlist[i].set_color(color)
         plt.xlabel("Decade")
         plt.ylabel("Average length of songs")
@@ -432,15 +432,16 @@ def get_songs_lines(song) -> List[str]:
 
 if __name__ == '__main__':
     model = HebrewSongs()
+    # model.get_song_length_from_years()
     # model.get_artists_gender()
     # model.get_most_common(20, decade=2010)
     # model.get_ngram_most_common(20, decade=2000, ngram_range=(3,4))
     # model.plot_name_in_song()
     # model.get_emotions_plot()
-    # model.get_song_length_from_years()
+    model.get_song_length_from_years()
     
     
     # ???
     # model.learn_decade()
-    # model.uniqe_ngram_per_decade()
+    model.uniqe_ngram_per_decade()
     # model.guess_the_artist(['שירי מימון','שלומי שבת','הדג נחש','שרית חדד','כוורת','עומר אדם','אייל גולן','נועה קירל','שלמה ארצי'])
