@@ -31,11 +31,12 @@ class Emotions:
 
 class HebrewSongs:
     def __init__(self, path: str = 'data/tagged_data.tsv'):
-        self.data: DataFrame = pd.read_csv(path,'\t')
+        self.data: DataFrame = pd.read_csv(path, sep='\t')
         self.data['decade'] = [int(int(year) / 10) * 10 if type(year) != float and year.isdigit() else 0 for year in self.data["year"]]
         self.data['lyrics_len'] = [len(lyric.split(' ')) for lyric in self.data['lyrics']]
         self.stop_words: List[str] = HebrewSongs.get_stop_words()
         self.add_name_in_song()
+        self.add_rhymes(normalize=False)
         self.data_hits = self.data[self.data['hit'] == 1]
         
     def add_colmn(self):
@@ -265,7 +266,7 @@ class HebrewSongs:
             songs_sentiment.append(song_sentiment)
 
         self.data['song_sentiment'] = songs_sentiment
-        self.data.to_csv('data/tagged_data.csv')
+        self.data.to_csv('data/tagged_data.tsv', sep='\t')
 
     def words_more_then(self,num_times = 100):
         words_dict= defaultdict(int)
@@ -402,7 +403,60 @@ class HebrewSongs:
         print(score)
         tree.plot_tree(decision_tree,feature_names=featurs)
         plt.show()
+           
+    def write_measure_of_sadness_and_joy(self, bert_classifier):
+        from alephBERT import predict_single_text_with_norm
+        happiest_scores = []
+        saddest_scores = []
+        for _, row in tqdm(self.data.iterrows()):
+            song_lines = get_songs_lines(row['lyrics'])
+            all_song = [predict_single_text_with_norm(bert_classifier, line, 0.3,0.8) for line in song_lines]               
+            happiest_score = all_song.count(Emotions.happy) / len(all_song)
+            saddest_score = all_song.count(Emotions.sad) / len(all_song)
 
+            happiest_scores.append(happiest_score)
+            saddest_scores.append(saddest_score)
+
+        self.data['happiest_score'] = happiest_scores
+        self.data['saddest_score'] = saddest_scores
+        self.data.to_csv('data/tagged_data__new.tsv', sep='\t')
+    
+    def add_rhymes(self, normalize: bool = False):
+        rhymes = []
+        for _, row in tqdm(self.data.iterrows()):
+            song_lines = get_songs_lines(row['lyrics'])
+            current_rhymes_sequence = 0
+            total_rhymes_sequence = 0
+            for i in range(1, len(song_lines)):
+                last_line = song_lines[i-1].replace(",","").replace(".","").strip()
+                current_line = song_lines[i].replace(",","").replace(".","").strip()
+                if last_line and current_line and last_line[-2:] == current_line[-2:]:
+                    current_rhymes_sequence += 1
+                else:
+                    total_rhymes_sequence += current_rhymes_sequence
+                    current_rhymes_sequence = 0
+            rhymes.append(total_rhymes_sequence / (len(song_lines) if normalize else 1))
+            
+        self.data['rhymes'] = rhymes
+
+    def get_most_happiest_songs(self):
+        data = self.data.sort_values("happiest_score", ascending=False)
+        k = 0
+        for _, row in tqdm(data.iterrows()):
+            print(row)
+            k += 1
+            if k == 10:
+                break
+    
+    def get_most_saddest_songs(self):
+        data = self.data.sort_values("saddest_score", ascending=False)
+        k = 0
+        for _, row in tqdm(data.iterrows()):
+            print(row)
+            k += 1
+            if k == 10:
+                break
+    
     @staticmethod
     def get_stop_words():
         with open('stopwords.txt', 'r', encoding='utf8') as f:
@@ -442,7 +496,7 @@ def write_test_and_train_csv():
                 texts.append(deEmojify(text))
 
         df = pd.DataFrame({'label': labels, 'text': texts}, columns=['label', 'text'])
-        df.to_csv(f'data/{data_type}_sentiment.csv')
+        df.to_csv(f'data/{data_type}_sentiment.tsv', sep='\t')
 
 
 def deEmojify(text):
@@ -464,8 +518,8 @@ def get_songs_lines(song) -> List[str]:
 if __name__ == '__main__':
     model = HebrewSongs()
     # model.get_song_length_from_years()
-    model.get_emotions_plot()
-    model.get_emotions_to_wars_plot()
+    # model.get_emotions_plot()
+    # model.get_emotions_to_wars_plot()
     # model.get_most_common(20, decade=2010)
     # model.get_ngram_most_common(20, decade=2000, ngram_range=(3,4))
     # model.plot_name_in_song()

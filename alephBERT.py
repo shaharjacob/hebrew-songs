@@ -11,6 +11,9 @@ from transformers import BertModel, BertTokenizerFast
 alephbert = BertModel.from_pretrained('onlplab/alephbert-base')
 alephbert_tokenizer = BertTokenizerFast.from_pretrained('onlplab/alephbert-base')
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+
+import analyze
+
 MAX_LEN = 64
 BATCH_SIZE = 16
 EPOCHS = 3
@@ -198,5 +201,8 @@ def runme():
     print(res)
 
 
-# if __name__ == '__main__':
-#     runme()
+if __name__ == '__main__':
+    # pass
+    model = analyze.HebrewSongs()
+    alephbert_model = initialize_model()
+    model.write_measure_of_sadness_and_joy(alephbert_model)
