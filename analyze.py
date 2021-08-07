@@ -517,6 +517,14 @@ def get_songs_lines(song) -> List[str]:
 
 if __name__ == '__main__':
     model = HebrewSongs()
+    for year in [1970, 1980, 1990, 2000, 2010, 2020]:
+        mean_happiest = model.data.loc[model.data['decade'] == year]["happiest_score"].mean()
+        mean_saddest = model.data.loc[model.data['decade'] == year]["saddest_score"].mean()
+        mean_rhymes = model.data.loc[model.data['decade'] == year]["rhymes"].mean()
+        secho(f"{year}", fg="blue", bold=True)
+        secho(f"     Happy mean: {mean_happiest}", fg="blue")
+        secho(f"     Sad mean: {mean_saddest}", fg="blue")
+        secho(f"     Rhymes mean: {mean_rhymes}", fg="blue")
     # model.get_song_length_from_years()
     # model.get_emotions_plot()
     # model.get_emotions_to_wars_plot()
