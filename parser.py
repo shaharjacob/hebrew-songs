@@ -12,17 +12,9 @@ from bs4 import BeautifulSoup
 
 BASE_URL = 'https://shironet.mako.co.il'
 ABC_INDECIES = list(range(22))
-ABC = 'abcdefghijklmnopqrstuvwxysABCDEFGHIJKLMNOPQRSTUVWXYZ'
+ABC = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 GOOGLE_URL = 'https://www.google.com'
 
-arr = [
-    'סטטיק ובן אל תבורי',
-    'עדן בן זקן',
-    'אליעד נחום',
-    'עדן חסון',
-    'איתי לוי',
-    'נועה קירל',
-]
 
 def read_url(url: str, decode: bool = True) -> str:
     try:
@@ -81,8 +73,6 @@ def get_artist_songs(load: bool = True, save: bool = False) -> List[Dict[str, st
     artists = get_artists()
     songs = []
     for artist in tqdm(artists):
-        if artist['name'] not in arr: 
-            continue
 
         number_of_pages = get_number_of_pages(artist["id"])
         if number_of_pages == -1:
