@@ -19,6 +19,6 @@ def evaluate(predicted_labels, labels):
     cm = confusion_matrix(labels,predicted_labels)
 
     secho(f"Accuracy: {acc}", fg="blue")
-    secho(f'The matrix header: {labels}', fg="blue")
+    secho(f'The matrix header: {sorted(list(set(list(labels))))}', fg="blue")
     secho(f"Confusion matrix:", fg="blue")
     secho(f"{cm}", fg="blue")

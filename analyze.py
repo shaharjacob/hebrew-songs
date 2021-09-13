@@ -1,5 +1,5 @@
 import re
-from typing import List, Tuple
+from typing import List, Tuple, Set
 from collections import Counter, defaultdict
 
 import numpy as np
@@ -28,18 +28,19 @@ ISRAEL_WARS = ['1973', '1982','2006', '2008', '2012', '2014', '2021']
 
 class Emotions:
     norm = 0
-    happy = 1
-    sad = 2
+    happy = 2
+    sad = 1
 
 
 class HebrewSongs:
-    def __init__(self, path: str = 'data/tagged_data.tsv'):
+    def __init__(self, path: str = 'data/tagged_data.tsv', normalize_rymes: bool = False):
         self.data: DataFrame = pd.read_csv(path, '\t')
         self.data['decade'] = [int(int(year) / 10) * 10 if type(year) != float and year.isdigit() else 0 for year in self.data["year"]]
         self.data['lyrics_len'] = [len(lyric.split(' ')) for lyric in self.data['lyrics']]
-        self.stop_words: List[str] = HebrewSongs.get_stop_words()
+        self.stop_words: List[str] = HebrewSongs.get_stop_words('stopwords.txt')
+        self.stop_words_n_grams_2: List[str] = HebrewSongs.get_stop_words('stopwords_ngrams_2.txt')
         self.add_name_in_song()
-        self.add_rhymes(normalize=False)
+        self.add_rhymes(normalize=normalize_rymes)
         self.data_hits = self.data[self.data['hit'] == 1]
 
     def add_colmn(self):
@@ -72,7 +73,6 @@ class HebrewSongs:
             data = self.data[self.data['decade'] == decade]
             if hits:
                 data = data[data['hit'] == 1]
-                print(len(data))
             gender_in_hist = data['gender'].value_counts(normalize=True)
             mans.append(gender_in_hist[male] * 100)
             females.append(gender_in_hist[female] * 100)
@@ -89,7 +89,6 @@ class HebrewSongs:
         plt.ylabel('precentage of singing gender')
         plt.legend()
         plt.show()
-        # gender_total = data['gender'].value_counts(normalize=True)
 
     def get_lyrics(self, df: DataFrame = DataFrame()):
         all_lyrics: Series = self.data["lyrics"] if df.empty else df["lyrics"]
@@ -127,7 +126,6 @@ class HebrewSongs:
             else:
                 decade_data = self.data[-self.data['year'].isin(ISRAEL_WARS+ISRAEL_WARS_plus_1)]
 
-            print(f'the years are  = {year} ')
             count_values = decade_data["song_sentiment"].value_counts(normalize=True)
             sad_songs.append(count_values[Emotions.sad])
             happy_songs.append(count_values[Emotions.happy] + count_values[Emotions.norm])
@@ -146,13 +144,15 @@ class HebrewSongs:
         plt.legend()
         plt.show()
 
-    def get_emotions_plot(self):
+    def get_emotions_plot(self, hits: bool = False):
         male = 0
         female = 1
         band = 2
         sad_songs = []
         happy_songs = []
         normal_songs = []
+        if hits:
+            self.data = self.data[self.data['hit'] == 1]
         for gender in [male, female, band]:
             decade_data = self.data[self.data["gender"] == gender]
             count_values = decade_data["song_sentiment"].value_counts(normalize=True)
@@ -174,7 +174,7 @@ class HebrewSongs:
                 label='normal songs')
         plt.xlabel("Gender")
         plt.ylabel("songs emotion ")
-        plt.title("songs sentiment vs gender")
+        plt.title(f"songs sentiment vs gender {'(hits)' if hits else ''}")
         plt.xticks(r + width / 2, ['male', 'female', 'band'])
         plt.legend()
         plt.show()
@@ -202,7 +202,7 @@ class HebrewSongs:
         plt.legend()
         plt.show()
 
-    def get_ngram_most_common(self, n: int, df: DataFrame = DataFrame(), decade=None, ngram_range: tuple = (3, 4),show=True):
+    def get_ngram_most_common(self, n: int, df: DataFrame = DataFrame(), decade=None, ngram_range: tuple = (3, 4), show=True):
         data = self.data
         if decade is not None:
             data = self.data[self.data['decade'] == decade]
@@ -213,18 +213,22 @@ class HebrewSongs:
         bag_of_words = vec.transform(all_lyrics)
         sum_words = bag_of_words.sum(axis=0)
         words_freq = [(word, sum_words[0, idx])
-                      for word, idx in vec.vocabulary_.items()]
+                      for word, idx in vec.vocabulary_.items() 
+                      if word not in self.stop_words_n_grams_2]
         top_n_bigrams: List[Tuple[str]] = sorted(words_freq, key=lambda x: x[1], reverse=True)[:n]
         x, y = map(list, zip(*top_n_bigrams))
+
         sns.barplot(x=y, y=HebrewSongs.invert_words(x))
         if show:
+            plt.title(decade if decade else "")
+            plt.xlabel("תורידת")
             plt.show()
         return x
 
-    def uniqe_ngram_per_decade(self):
+    def uniqe_ngram_per_decade(self, ngram_range=(3,4)):
         decades_words = {}
         for decade in DECADES:
-            m = self.get_ngram_most_common(10, decade=decade,show=False)
+            m = self.get_ngram_most_common(15, decade=decade, ngram_range=ngram_range, show=False)
             decades_words[decade] = m
         uniqe_per_decade = {}
         for decade in DECADES:
@@ -239,7 +243,9 @@ class HebrewSongs:
                 if not seen:
                     uniwq_words.append(word)
             uniqe_per_decade[decade] = uniwq_words
-        print(uniqe_per_decade)
+        for k,v in uniqe_per_decade.items():
+            secho(f"{k}:  ", fg='blue', bold=True, nl=False)
+            secho(f"{', '.join(HebrewSongs.invert_words(v))}", fg='blue')
         return uniqe_per_decade
 
     def print_number_bits(self):
@@ -303,7 +309,7 @@ class HebrewSongs:
 
     def plot_name_in_song(self):
         a = self.data[["artist_name_in_song", "decade"]].groupby("decade").mean()
-        plt.scatter(DECADES, [a['artist_name_in_song'][decade] for decade in DECADES], s=40, color='blue')
+        plt.plot(DECADES, [a['artist_name_in_song'][decade] for decade in DECADES])
         plt.title('artist name in a song')
         plt.xlabel('decade')
         plt.ylabel('num of songs with singer names in the song / total')
@@ -323,7 +329,7 @@ class HebrewSongs:
         y_train = train[learn_feature]
         decision_tree = DecisionTreeClassifier(random_state=0, max_depth=4)
         decision_tree = decision_tree.fit(X_train, y_train)
-        tree_text = export_text(decision_tree, feature_names=vectorizer.get_feature_names())
+        tree_text = export_text(decision_tree, feature_names=[HebrewSongs.invert_words(word) for word in vectorizer.get_feature_names()])
         res_pred = decision_tree.predict(X_test)
         score = accuracy_score(y_test, res_pred)
         decision_tree.score(X_test, y_test)
@@ -334,17 +340,18 @@ class HebrewSongs:
     def split_for_test(self, artists_list, feature_check_name='artist_name'):
         learn_feature = feature_check_name
         know_featurs = ['hit', 'year', 'lyrics_len', 'song_sentiment', "artist_name_in_song", 'artist_name', 'gender']
+        # know_featurs = ['hit', 'lyrics_len', 'song_sentiment', 'artist_name']
 
         if learn_feature in know_featurs:
             know_featurs.remove(learn_feature)
         # gapminder.year.isin(years)
         learn_artists = self.data[self.data[feature_check_name].isin(artists_list)]
 
-        print(learn_artists['artist_name'].value_counts())
+        # print(learn_artists['artist_name'].value_counts())
         X = learn_artists[know_featurs]
         train, test = train_test_split(learn_artists, test_size=0.2)
         # X = self.data["lyrics"]
-        vectorizer = CountVectorizer()
+        # vectorizer = CountVectorizer()
         # X_train = vectorizer.fit_transform(X)
         X_train = train[know_featurs]
         X_test = test[know_featurs]
@@ -361,7 +368,7 @@ class HebrewSongs:
         score = accuracy_score(y_test, res_pred)
         decision_tree.score(X_test, y_test)
         print(tree_text)
-        print(score)
+        # print(score)
 
     def predict_with_mnb(self, artists_list, feature_check_name='artist_name'):
         X_train, X_test, y_test, y_train, know_featurs = self.split_for_test(artists_list, feature_check_name)
@@ -372,21 +379,23 @@ class HebrewSongs:
         evaluate(mnb_prediction, y_test)
 
     def learn_from_lyrics(self):
-        self.data['decadedecade'] = [int(int(year) / 10) * 10 if type(year) != float and year.isdigit() else 0 for year in
-                               self.data["year"]]
-        self.data = self.data[self.data["decade"] > 1970]
+        self.data['decade'] = [int(int(year) / 10) * 10 if type(year) != float and year.isdigit() else 0 for year in self.data["year"]]
+        self.data = self.data[self.data["decade"] >= 1970]
+        
         X = self.data["lyrics"]
-
         y = self.data["decade"]
+        
         vectorizer = CountVectorizer()
-
+        mnb = MultinomialNB()
+        
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
         X_train = vectorizer.fit_transform(X_train)
-        X_test = vectorizer.transform(X_test)
-        mnb = MultinomialNB()
         mnb.fit(X_train, y_train)
-        mnb_prediction = mnb.predict(X_test)
+        
+        X_test = vectorizer.transform(X_test)
         y_test = np.array(y_test)
+        mnb_prediction = mnb.predict(X_test)
+        
         evaluate(mnb_prediction, y_test)
         return X_train, X_test, y_train, y_test, vectorizer
 
@@ -454,31 +463,38 @@ class HebrewSongs:
                 x_deta.append(y)
                 y_deta.append(float(x))
         plt.plot(y_deta,x_deta)
+        plt.title(f"Average number of rymes vs decade")
+        plt.xlabel(f"Decade")
+        plt.ylabel(f"Average number of rymes in song")
         plt.show()
 
 
     def get_most_happiest_songs(self,number_of_happy_songs=10):
         data = self.data.sort_values("happiest_score", ascending=False)
-        k = 0
+        happiest_songs = []
         for _, row in tqdm(data.iterrows()):
-            print(row)
-            k += 1
-            if k == number_of_happy_songs:
-                break
+            # curr_score = row['happiest_score'] / len(row['lyrics'].split())
+            curr_score = row['happiest_score']
+            happiest_songs.append((row, curr_score))
+        happiest_songs = sorted(happiest_songs, key=lambda x: x[1], reverse=True)
+        print(happiest_songs[:number_of_happy_songs])
+        return happiest_songs[:number_of_happy_songs]
+
 
     def get_most_saddest_songs(self, number_of_sad_songs=10):
         data = self.data.sort_values("saddest_score", ascending=False)
-        k = 0
+        saddest_songs = []
         for _, row in tqdm(data.iterrows()):
-            print(row)
-            k += 1
-            if k == number_of_sad_songs:
-                break
+            curr_score = row['saddest_score'] / len(row['lyrics'].split())
+            saddest_songs.append((row, curr_score))
+        saddest_songs = sorted(saddest_songs, key=lambda x: x[1], reverse=True)
+        print(saddest_songs[:number_of_sad_songs])
+        return saddest_songs[:number_of_sad_songs]
 
     @staticmethod
-    def get_stop_words():
-        with open('stopwords.txt', 'r', encoding='utf8') as f:
-            return f.read().split()
+    def get_stop_words(path: str) -> Set[str]:
+        with open(path, 'r', encoding='utf8') as f:
+            return set(f.read().split('\n'))
 
     @staticmethod
     def invert_words(words):
@@ -520,25 +536,29 @@ def get_songs_lines(song) -> List[str]:
 
 
 if __name__ == '__main__':
+    # pass
     model = HebrewSongs()
-    print(model.data)
-    # 1. model.get_artists_gender(hits=True)
-    # 2. model.get_artists_gender()
-    # 3. model.model.get_most_common(20)
-    # 3. model.model.get_ngram_most_common(20, ngram_range=(3, 4))
-    # 4. (model.uniqe_ngram_per_decade())
-    # 5. model.plot_name_in_song()
-    # 6. model.get_emotions_plot()
-    # 7. model.get_song_length_from_years()
-    # 8. model.get_emotions_to_wars_plot()
-    # 9. model.plot_rymes()
-    # 10. model.get_most_saddest_songs(number_of_sad_songs=3)
-    # 10. model.get_most_saddest_songs(number_of_sad_songs=3)
-    # 11.model.learn_from_lyrics()
-    # 12. model.guess_the_artist(['שירי מימון','שלומי שבת','הדג נחש','שרית חדד','כוורת','עומר אדם','אייל גולן','נועה קירל','שלמה ארצי'])
-    # 12.model.learn_from_lyrics()
-    # for year int_happiest_songs(number_of_happy_songs=3)
-    # for year in [1970, 1980, 1990, 2000, 2010, 2020]:
+    # model.get_artists_gender(hits=True)
+    # model.get_artists_gender()
+    # model.get_ngram_most_common(20, ngram_range=(2, 2), decade=1970)
+    # for dacade in [1970, 1980, 1990, 2000, 2010, 2020]:
+    #     model.get_ngram_most_common(20, ngram_range=(2, 2), decade=dacade, show=False)
+    # model.uniqe_ngram_per_decade(ngram_range=(3,4))
+    # model.plot_name_in_song()
+    # model.get_song_length_from_years()
+    # model.plot_rymes()
+    # data = model.data.sort_values("rhymes", ascending=False)
+    # i = 0
+    # for row in data.iterrows():
+    #     print(row)
+    #     i += 1
+    #     if i == 3: 
+    #         break
+    # model.get_emotions_plot(hits=True)
+    # model.get_emotions_to_wars_plot()
+    
+    # model.get_most_saddest_songs(number_of_sad_songs=5)
+    # model.get_most_happiest_songs(number_of_happy_songs=5)
     # for year in [1970, 1980, 1990, 2000, 2010, 2020]:
     #     mean_happiest = model.data.loc[model.data['decade'] == year]["happiest_score"].mean()
     #     mean_saddest = model.data.loc[model.data['decade'] == year]["saddest_score"].mean()
@@ -547,5 +567,10 @@ if __name__ == '__main__':
     #     secho(f"     Happy mean: {mean_happiest}", fg="blue")
     #     secho(f"     Sad mean: {mean_saddest}", fg="blue")
     #     secho(f"     Rhymes mean: {mean_rhymes}", fg="blue")
+    
+    model.learn_from_lyrics()
+    # model.guess_the_artist(['הדג נחש' ,'שרית חדד' ,'כוורת' ,'עומר אדם' ,'אייל גולן' ,'נועה קירל'])
+
+    
 
 
